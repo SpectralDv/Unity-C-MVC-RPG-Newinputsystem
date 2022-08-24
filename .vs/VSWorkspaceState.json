@@ -4,9 +4,10 @@
     "\\Controller",
     "\\InputController",
     "\\Interface",
+    "\\LoadFile",
     "\\Models",
     "\\View"
   ],
-  "SelectedNode": "\\View.meta",
+  "SelectedNode": "\\Models\\ModelGamepad.cs",
   "PreviewInSolutionExplorer": false
 }

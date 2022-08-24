@@ -7,7 +7,8 @@ using UnityEngine;
 
 using Model;
 using Observer;
-namespace SpaceAnimator
+using Model.uAnimator;
+namespace Controller.uAnimator
 {
     enum AnimState
     {

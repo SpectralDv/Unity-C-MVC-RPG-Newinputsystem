@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using Player;
-namespace Keyboard
+using Model.MoveRote;
+using Model.Keyboard;
+namespace Controller.Keyboard
 {
     enum eKeys
     {

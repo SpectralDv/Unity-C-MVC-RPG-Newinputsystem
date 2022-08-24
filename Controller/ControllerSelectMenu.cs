@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Space
+using Model.SelectMenu;
+namespace Controller.SelectMenu
 {
     public class ControllerSelectMenu : MonoBehaviour
     {
-        //список меню для выбора персонажей
         List<ModelSelectMenu> listSelectMenu = new List<ModelSelectMenu>();
 
         ControllerSelectMenu(float widthWindow, float heightWindow)

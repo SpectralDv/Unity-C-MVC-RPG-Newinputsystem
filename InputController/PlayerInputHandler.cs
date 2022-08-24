@@ -1,19 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; //FindObjectsOfType
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 
-using Gamepad;
-using Player;
+using View.Gamepad;
 namespace View
 {
 
     public class PlayerInputHandler : MonoBehaviour
     {
-        private float playerIndex;
+        private float numPlayer;
         private PlayerInput playerInput;
 
         private ViewCamera viewCamera;
@@ -23,13 +22,13 @@ namespace View
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
-            playerIndex = playerInput.playerIndex;
+            numPlayer = playerInput.playerIndex;
 
             var viewPlayers = FindObjectsOfType<ViewPlayer>();
-            viewPlayer = viewPlayers.FirstOrDefault(m => m.GetPlayerIndex() == playerIndex);
+            viewPlayer = viewPlayers.FirstOrDefault(m => m.GetNumPlayer() == numPlayer);
 
             var viewGamepads = FindObjectsOfType<ViewGamepad>();
-            viewGamepad = viewGamepads.FirstOrDefault(m => m.GetPlayerIndex() == playerIndex);
+            viewGamepad = viewGamepads.FirstOrDefault(m => m.GetNumPlayer() == numPlayer);
         }
 
         //////////////////////////////////////////

@@ -15,7 +15,6 @@ namespace View
         {
 			controllerMenuPanel = new ControllerMenuPanel();
 		}
-
 	}
 }
 

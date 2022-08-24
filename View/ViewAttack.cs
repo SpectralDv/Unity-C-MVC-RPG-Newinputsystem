@@ -45,7 +45,7 @@ namespace View
             _nameViewModel = nameViewModel;
         }
 
-        public void HitDamage()
+        public void HandDamage()
         {
             if (_nameViewModel == "ViewPersonage")
             {
@@ -84,7 +84,7 @@ namespace View
 
         public void animActiveCollider()
         {
-            HitDamage();
+            HandDamage();
             RightHand.GetComponent<ViewTriggerAttack>().ActiveCollider();
             LeftHand.GetComponent<ViewTriggerAttack>().ActiveCollider();
         }

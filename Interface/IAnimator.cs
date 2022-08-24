@@ -3,7 +3,7 @@
 
 using Observer;
 using Model;
-namespace SpaceAnimator
+namespace uAnimator
 {
     interface IAnimator : IModel, IObserver
     {

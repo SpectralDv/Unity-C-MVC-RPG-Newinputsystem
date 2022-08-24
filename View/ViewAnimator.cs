@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 using Player;
-using SpaceAnimator;
-namespace View
+using uAnimator;
+using Model.uAnimator;
+using Controller.uAnimator;
+namespace View.uAnimator
 {
     public class ViewAnimator : MonoBehaviour
     {

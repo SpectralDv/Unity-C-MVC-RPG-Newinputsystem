@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 using Model;
-namespace Player
+namespace Model.MoveRote
 {
 
     public class ModelMoveRote : IModel

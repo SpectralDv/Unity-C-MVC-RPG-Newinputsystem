@@ -46,5 +46,4 @@ namespace View
             viewPlayer.SetPersonage(RedPersonage);
         }
     }
-
 }

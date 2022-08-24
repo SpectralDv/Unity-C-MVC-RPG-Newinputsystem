@@ -1,20 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; //FindObjectsOfType
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 
-using Keyboard;
+using View.Keyboard;
 namespace View
 {
     public class PlayerInputKeyboard : MonoBehaviour
     {
-        private float playerIndex;
+        private float numPlayer;
         public PlayerInput playerInput;
-
-        public ViewPlayer viewPlayer;
 
         private Vector2 moveVector2;
         private float rotateHorValue;
@@ -30,15 +28,15 @@ namespace View
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
-            playerIndex = playerInput.playerIndex;
+            numPlayer = playerInput.playerIndex;
 
             var viewKeyboards = FindObjectsOfType<ViewKeyboard>();
-            viewKeyboard = viewKeyboards.FirstOrDefault(m => m.GetPlayerIndex() == playerIndex);
+            viewKeyboard = viewKeyboards.FirstOrDefault(m => m.GetNumPlayer() == numPlayer);
         }
 
-        public float GetPlayerIndex()
+        public float GetNumPlayer()
         {
-            return playerIndex;
+            return numPlayer;
         }
 
         ////////////////////////////////////////////

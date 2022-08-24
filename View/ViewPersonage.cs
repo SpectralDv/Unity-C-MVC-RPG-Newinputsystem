@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using SpaceAnimator;
 using Slot;
 using Player;
 using Weapon;
-using Personage;
+using uAnimator;
+using View.uAnimator;
+using Controller.uAnimator;
+using Controller.Personage;
 namespace View
 {
     public class ViewPersonage : MonoBehaviour
@@ -19,12 +21,13 @@ namespace View
         private ViewAnimator viewAnimator;
         private ViewPlayer viewPlayer; 
         private ViewFPS viewFPS;
+        private ViewVisiblePanel viewVisiblePanel;
 
         public GameObject Person;
         public GameObject Weapon;
         private Terrain terrain;
 
-        public float maxHealt;
+        public float maxHealth;
         public float health;
         public float pWeaponDamage;
         public float mWeaponDamage;
@@ -33,7 +36,6 @@ namespace View
         public float pDefence;
         public float mDefence;
         public string nameWeapon;
-        public Vector3 velocity;
         public string state;
 
         void Awake()
@@ -43,6 +45,7 @@ namespace View
             viewCamera = transform.GetComponent<ViewCamera>();
             viewAnimator = transform.GetComponent<ViewAnimator>();
             viewPlayer = transform.GetComponent<ViewPlayer>();
+            
             viewFPS = GameObject.FindGameObjectWithTag("tagFPS").gameObject.GetComponent<ViewFPS>();
 
             terrain = GameObject.FindGameObjectWithTag("tagTerrain").gameObject.GetComponent<Terrain>();
@@ -50,18 +53,22 @@ namespace View
 
         void Start()
         {
+            viewVisiblePanel = viewPlayer.viewVisiblePanel;
+
             controllerAnimator = transform.GetComponent<ViewAnimator>().controllerAnimator;
 
             controllerPersonage.AddObserver(controllerAnimator);
         }
 
 
-        void Update()  
+        void FixedUpdate()  
         {
             float hTerrain = terrain.SampleHeight(new Vector3(transform.position.x, 0, transform.position.z));
-            controllerPersonage.SetHeightTerrain(hTerrain);
+            controllerPersonage.UpdateCharacter("HTerrain", hTerrain);
+            //controllerPersonage.SetHeightTerrain(hTerrain);
 
-            if(controllerPersonage.GetPosition().y < -10) { TakeDamage(9999); }
+            if (controllerPersonage.GetCharacter("Position",new Vector3()).y < -10) { TakeDamage(99999); }
+            //if (controllerPersonage.GetPosition().y < -10) { TakeDamage(99999); }
 
             if (Person != null)
             {
@@ -72,33 +79,36 @@ namespace View
 
         public void ViewStatus()
         {
-            ModelPersonage _mpState = new ModelPersonage();
-            _mpState = controllerPersonage.GetPersonage();
+            maxHealth = controllerPersonage.GetCharacter("MaxHelth", 0);
+            health = controllerPersonage.GetCharacter("Health", 0);
+            pWeaponDamage = controllerPersonage.GetCharacter("PWeaponDamage", 0);
+            mWeaponDamage = controllerPersonage.GetCharacter("MWeaponDamage", 0);
+            pDamage = controllerPersonage.GetCharacter("PDamage", 0);
+            mDamage = controllerPersonage.GetCharacter("MDamage", 0);
+            pDefence = controllerPersonage.GetCharacter("PDefence", 0);
+            mDefence = controllerPersonage.GetCharacter("MDefence", 0);
+            nameWeapon = controllerPersonage.GetCharacter("NameWeapon", "");
+            state = controllerPersonage.GetCharacter("AnimState", "");
 
-            maxHealt = _mpState._maxHealth;
-            health = _mpState._health;
-            pWeaponDamage = _mpState._pWeaponDamage;
-            mWeaponDamage = _mpState._mWeaponDamage;
-            pDamage = _mpState._pDamage;
-            mDamage = _mpState._mDamage;
-            pDefence = _mpState._pDefence;
-            mDefence = _mpState._mDefence;
-            nameWeapon = _mpState._nameWeapon;
-            velocity = _mpState._velocity;
-            state = _mpState._nameState;
+
+            viewVisiblePanel.ViewHealth(maxHealth, health);
 
             Debug.Log("ViewStatus");
         }
         public void SetPersonage(GameObject pers)
         {
             Person = pers;
-            controllerPersonage.SetState("isIdle");
+            controllerPersonage.UpdateCharacter("AnimState", "isIdle");
+            //controllerPersonage.SetState("isIdle");
         }
         public void SetWeapon(GameObject weap)
         {
             Weapon = weap;
-            controllerPersonage.SetAttackState(false);
-            controllerPersonage.SetState("isIdle");
+            controllerPersonage.UpdateCharacter("AnimState", "isIdle");
+            controllerPersonage.UpdateCharacter("AttackState", false);
+
+            //controllerPersonage.SetAttackState(false);
+            //controllerPersonage.SetState("isIdle");
         }
         
         /////////////////////////////////////////////////////
@@ -113,7 +123,7 @@ namespace View
         }
         public void InputAttack(string nameAttack)
         {
-            if (controllerPersonage.GetState() != nameAttack)
+            if (controllerPersonage.GetCharacter("AnimState", "") != nameAttack)
             {
                 Person.GetComponent<Animator>().applyRootMotion = true;
                 controllerPersonage.Attack(nameAttack);
@@ -124,16 +134,17 @@ namespace View
         {
             controllerPersonage.Move(Time.deltaTime); //Time.deltaTime //viewFPS.GetDeltaTime()
 
-            Person.transform.Translate(controllerPersonage.GetAccelerateMove());
-            controllerPersonage.SetPosition(Person.transform.position);
-            ViewStatus();
+            Person.transform.Translate(controllerPersonage.GetCharacter("AccelerateMove",new Vector3(0,0,0)));
+            controllerPersonage.UpdateCharacter("Position",Person.transform.position);
+            //controllerPersonage.SetPosition(Person.transform.position);
+            //ViewStatus();
         }
         public void RotatePersonage()
         {
             controllerPersonage.Rotate(Time.deltaTime); //Time.deltaTime //viewFPS.GetDeltaTime()
 
-            Person.transform.localEulerAngles = new Vector3(0, GetAngleEuler().y, 0);
-            viewCamera.SetRoteVer(GetAngleEuler().x);
+            Person.transform.localEulerAngles = new Vector3(0, controllerPersonage.GetCharacter("AngleEuler", new Vector3(0,0,0)).y, 0);
+            viewCamera.SetRoteVer(controllerPersonage.GetCharacter("AngleEuler", new Vector3(0, 0, 0)).x);
         }
         public void AttackDisActive()
         {
@@ -144,19 +155,21 @@ namespace View
         /////////////////////////////////////////////////////
         public Vector3 GetPosition()
         {
-            return controllerPersonage.GetPosition();
+            return controllerPersonage.GetCharacter("Position",new Vector3());
+            //return controllerPersonage.GetPosition();
         }
         public Vector3 GetAngleEuler()
         {
-            return controllerPersonage.GetAngleEuler();
+            return controllerPersonage.GetCharacter("AngleEuler",new Vector3());
+            //return controllerPersonage.GetAngleEuler();
         }
         public float GetDamage()
         {
-            return controllerPersonage.GetDamage();
+            return controllerPersonage.DefineDamage();
         }
         public string GetName()
         {
-            return controllerPersonage.GetName();
+            return controllerPersonage.GetCharacter("NameModel", "");
         }
 
         /////////////////////////////////////////////////////
@@ -166,7 +179,8 @@ namespace View
             float terrainY = terrain.SampleHeight(new Vector3(vec.x, 0, vec.y));
             controllerPersonage.InitPersonage(new Vector3(vec.x, terrainY + vec.y, vec.z));
 
-            return controllerPersonage.GetPosition();
+            return controllerPersonage.GetCharacter("Position",new Vector3());
+            //return controllerPersonage.GetPosition();
         }
 
         /////////////////////////////////////////////////////
@@ -174,7 +188,7 @@ namespace View
         {
             controllerPersonage.TakeDamage(hitDamage);
 
-            if (controllerPersonage.GetDeathState() == true)
+            if (controllerPersonage.GetCharacter("DeathState", true) == true)
             {
                 Person.transform.position = SpawnPersonage();
             }

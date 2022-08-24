@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Gamepad;
-namespace View
-{
 
+using Controller.Gamepad;
+namespace View.Gamepad
+{
     public class ViewGamepad : MonoBehaviour
     {
-        public float playerIndex;
+        public float numPlayer;
 
         private ControllerGamepad controllerGamepad;
 
@@ -27,7 +27,7 @@ namespace View
             controllerGamepad = new ControllerGamepad();
         }
 
-        public float GetPlayerIndex() {  return playerIndex; }
+        public float GetNumPlayer() {  return numPlayer; }
 
         public void InputGamepadMove(string nameKey, Vector2 vectorValue)
         {
@@ -46,8 +46,5 @@ namespace View
         {
             viewPersonage.InputAttack(nameAttack);
         }
-
-
     }
-
 }

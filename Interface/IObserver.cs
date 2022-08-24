@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 using Model;
-using SpaceAnimator;
+using uAnimator;
 using Personage;
 using Weapon;
 namespace Observer
@@ -16,7 +16,8 @@ namespace Observer
 
     public interface IObserverWeapon : IObserver
     {
-        int AddWeapon(ModelWeapon mw);
+        //int AddWeapon(ModelWeapon mw);
+        int AddWeapon(IModel mw);
     }
 
     public interface IObserverAnimator : IObserver
@@ -58,7 +59,8 @@ namespace Observer
         {
             if (p.Key == "weapon")
             {
-                foreach (IObserverWeapon o in observers) { o.AddWeapon((ModelWeapon)p.Value); }
+                //foreach (IObserverWeapon o in observers) { o.AddWeapon((ModelWeapon)p.Value); }
+                foreach (IObserverWeapon o in observers) { o.AddWeapon((IModel)p.Value); }
             }
         }
     }

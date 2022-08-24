@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ namespace View
 {
     public class ViewVisiblePanel : MonoBehaviour
     {
-
+        public float numPlayer;
         private Slider sliderHealth;
         private Slider sliderMana;
         private Slider sliderExp;
@@ -17,12 +18,17 @@ namespace View
         {
             sliderHealth = transform.Find("HealthPlayer").GetComponent<Slider>();
 
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false); //it make Player
         }
 
         void Update()
         {
-            ViewHealth(100,100);
+            //ViewHealth(100,100);
+        }
+
+        public float GetNumPlayer()
+        {
+            return numPlayer;
         }
 
         public void ActiveVisiblePanel()
@@ -34,10 +40,10 @@ namespace View
             gameObject.SetActive(false);
         }
 
-        public void ViewHealth(float maxHealth, float curHealth)
+        public void ViewHealth(float maxHealth, float health)
         {
             sliderHealth.maxValue = maxHealth;
-            sliderHealth.value = curHealth;
+            sliderHealth.value = health;
         }
         public void ViewMana()
         {
@@ -47,6 +53,5 @@ namespace View
         {
 
         }
-
     }
 }

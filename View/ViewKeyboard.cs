@@ -6,18 +6,23 @@ using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 
-using Keyboard;
-namespace View
+using Controller.Keyboard;
+namespace View.Keyboard
 {
 
     public class ViewKeyboard : MonoBehaviour
     {
-        public float playerIndex;
+        public float numPlayer;
 
         public ControllerKeyboard controllerKeyboard;
 
         private ViewPlayer viewPlayer;
         private ViewPersonage viewPersonage;
+
+        public ViewKeyboard()
+        {
+            controllerKeyboard = new ControllerKeyboard();
+        }
 
         void Awake()
         {
@@ -25,14 +30,9 @@ namespace View
             viewPersonage = transform.GetComponent<ViewPersonage>();
         }
 
-        public ViewKeyboard()
+        public float GetNumPlayer()
         {
-            controllerKeyboard = new ControllerKeyboard();
-        }
-
-        public float GetPlayerIndex()
-        {
-            return playerIndex;
+            return numPlayer;
         }
 
         public void InputKeyboardMove(string nameKey, string nameMove, Vector2 vectorKey)

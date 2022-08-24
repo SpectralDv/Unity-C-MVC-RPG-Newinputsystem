@@ -4,14 +4,70 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using SpaceAnimator;
 using Model;
 using Observer;
 using Slot;
-using Weapon;
-namespace Personage
+using Model.Slot;
+using Model.uAnimator;
+using Model.Weapon;
+using Model.Character;
+using Model.Personage;
+using Controller.Level;
+namespace Controller.Personage
 {
-    enum PersonageSlots
+    enum eCharacter
+    {
+        NameModel,
+        PosRightHand,
+        PosLeftHand,
+        NameWeapon,
+        MaxHelth,
+        Health,
+        PDamage,
+        MDamage,
+        PDefence,
+        MDefence,
+        TakeDamage,
+        TakePDamage,
+        TakeMdamage,
+        Level,
+        ExpPersonage,
+        ExpNextLevel,
+        Heartiness,
+        Intelegence,
+        Strange,
+        Dexterity,
+        Edurance,
+        Faith,
+        Arcane,
+        Spirit,
+        Mind,
+        Stamina,
+        LightAddress,
+        MediumAddress,
+        HavyAddress,
+        SpeedAnim,
+        SpeedWeapon,
+        PWeaponDamage,
+        MWeaponDamage,
+        HSpawn,
+        HTerrain,
+        SpeedMove, 
+        SpeedRotate,
+        Position,
+        AngleEuler,
+        CountFrame, 
+        InputMove, 
+        InputRotate, 
+        AccelerateMove, 
+        AccelerateRoteY, 
+        AnimState, 
+        StrState, 
+        AttackState,
+        DeathState 
+    };
+
+    enum ePersonageSlot
     {
         RightHand,
         LeftHand,
@@ -22,7 +78,7 @@ namespace Personage
         LeftFoot
     }
 
-    enum InventorySlots
+    enum eInventorySlot
     {
         Slot1,
         Slot2,
@@ -37,17 +93,24 @@ namespace Personage
 
     public class ControllerPersonage : IControllerPersonage
     {
-        public ModelPersonage _mp;
+        //public ModelPersonage _mp;
+        private List<ModelCharacter> _listCharacter;
         private List<ModelSlot> _listlSlot;
         private List<IObserver> _observers;
 
         public ControllerPersonage()
         {
-            _mp = new ModelPersonage();
-            _observers = new List<IObserver>();
+            //_mp = new ModelPersonage();
+            _listCharacter = new List<ModelCharacter>();
             _listlSlot = new List<ModelSlot>();
+            _observers = new List<IObserver>();
 
-            foreach (var i in Enum.GetValues(typeof(PersonageSlots)))
+            foreach (var i in Enum.GetValues(typeof(eCharacter)))
+            {
+                _listCharacter.Add(new ModelCharacter{_nameModel = i.ToString(),_value = 0, _string = "",_vector = new Vector3(0,0,0), _event=false});
+            }
+
+            foreach (var i in Enum.GetValues(typeof(ePersonageSlot)))
             {
                 _listlSlot.Add(new ModelSlot { _nameModel = i.ToString(), _slot = (ISlot)(new ModelSlot()) });
             }
@@ -57,64 +120,52 @@ namespace Personage
             Debug.Log("ControllerPersonage");
         }
 
-        private void SetNamePersonage(string namePersonage) { _mp._nameModel = namePersonage; }
-        private void SetNameWeapon(string nameWeapon) { _mp._nameWeapon = nameWeapon; }
-        private void SetPosRightHand(Vector3 vec) { _mp._posRightHand = vec; }
-        private void SetPosLeftHand(Vector3 vec) { _mp._posLeftHand = vec; }
-        private void SetMaxHealth(float maxHealth) { _mp._maxHealth = maxHealth; }
-        private void SetHealth(float health) { _mp._health = health; }
-        private void SetPDamage(float pDamage) { _mp._pDamage = pDamage; }
-        private void SetMDamage(float mDamage) { _mp._mDamage = mDamage; }
-        private void SetPDefence(float pDefence) { _mp._pDefence = pDefence; }
-        private void SetMDefence(float mDefence) { _mp._mDefence = mDefence; }
-        private void TakePDamage(float takePDamage) { _mp._takePDamage = takePDamage; }
-        private void TakeMDamage(float takeMDamage) { _mp._takeMDamage = takeMDamage; }
-        private void SetMoveSpeed(float speedMove) { _mp._speedMove = speedMove; }
-        private void SetRotateSpeed(float speedRotate) { _mp._speedRotate = speedRotate; }
-        private void SetAngleEuler(Vector3 angleEuler) { _mp._angleEuler = angleEuler; }
-        private void SetDeathState(bool deathState) { _mp._deathState = deathState; }
-        private void SetHeightSpawn(float hSpawn) { _mp._hSpawn = hSpawn; }
+        ////////////////////////////////////////////////
+        public void UpdateCharacter(string nameCharacter, float value)
+        {
+            _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._value = value;
+        }
+        public void UpdateCharacter(string nameCharacter, string text)
+        {
+            _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._string = text;
+        }
+        public void UpdateCharacter(string nameCharacter, Vector3 vector)
+        {
+            _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._vector = vector;
+        }
+        public void UpdateCharacter(string nameCharacter, bool event_)
+        {
+            _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._event = event_;
+        }
+        public float GetCharacter(string nameCharacter, float value)
+        {
+            return _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._value;
+        }
+        public string GetCharacter(string nameCharacter, string text)
+        {
+            return _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._string; 
+        }
+        public Vector3 GetCharacter(string nameCharacter, Vector3 vector)
+        {
+            return _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._vector;
+        }
+        public bool GetCharacter(string nameCharacter, bool event_)
+        {
+            return _listCharacter.Find(x => x._nameModel.Contains(nameCharacter))._event;
+        }
 
-        public void SetPosition(Vector3 position) { _mp._position = position; }
-        public void SetHeightTerrain(float hTerrain) { _mp._hTerrain = hTerrain; }
-        public void SetState(string nameState) { _mp._nameState = nameState; }
-        public void SetAttackState(bool attackState) { _mp._attackState = attackState; }
-
-        public string GetName() { return _mp._nameModel;  }
-        public string GetNameWeapon() { return _mp._nameWeapon; }
-        public Vector3 GetPosition() { return _mp._position; }
-        public Vector3 GetAngleEuler() { return _mp._angleEuler; }
-        public float GetSpeedMove() { return _mp._speedMove; }
-        public float GetSpeedRotate() { return _mp._speedRotate; }
-        public Vector3 GetAccelerateMove() { return _mp._accelerateMove; }
-        public float GetAccelerateRoteY() { return _mp._accelerateRoteY; }
-        public string GetState() { return _mp._nameState; }
-        public ModelPersonage GetPersonage() { return _mp;}
-        public float GetDamage() { return _mp._pWeaponDamage; }
-        public bool GetDeathState() { return _mp._deathState; }
-
+        ////////////////////////////////////////////////
         public void InitPersonage(Vector3 vecPos)
         {
-            SetNamePersonage("unknown");
-            SetNameWeapon("none");
-            SetPosRightHand(new Vector3(0, 0, 0));
-            SetPosLeftHand(new Vector3(0, 0, 0));
-            SetMaxHealth(100);
-            SetHealth(100);
-            SetPDamage(0);
-            SetMDamage(0);
-            SetPDefence(0);
-            SetMDefence(0);
-            TakePDamage(0);
-            TakeMDamage(0);
-            SetMoveSpeed(1);
-            SetRotateSpeed(1);
-            SetPosition(vecPos);
-            SetAngleEuler(new Vector3(0, 0, 0));
-            SetState("isIdle");
-            SetAttackState(false);
-            SetDeathState(false);
-            SetHeightSpawn(2);
+            UpdateCharacter("MaxHelth", 100);
+            UpdateCharacter("Health",100);
+            UpdateCharacter("SpeedMove", 5);
+            UpdateCharacter("SpeedRotate", 100);
+            UpdateCharacter("Position", vecPos);
+            UpdateCharacter("AnimState", "isIdle");
+            UpdateCharacter("HSpawn",2);
+            UpdateCharacter("AttackState", false);
+            UpdateCharacter("DeathState", false);
         }
 
         ////////////////////////////////////////////////
@@ -135,7 +186,7 @@ namespace Personage
             {
                 foreach (IObserverAnimator o in _observers)
                 {
-                    int ret = o.ChangeAnimState(p.Value._nameModel, _mp._speedAnim);
+                    int ret = o.ChangeAnimState(p.Value._nameModel, GetCharacter("SpeedAnim",0));
                 }
             }
         }
@@ -143,7 +194,7 @@ namespace Personage
         //////////////////////////////////////////////
         public float Phisic()
         {
-            if (_mp._hTerrain < _mp._position.y)
+            if (GetCharacter("HTerrain",0) < GetCharacter("Position",new Vector3()).y)
             {
                 return -0.5f;
             }
@@ -153,52 +204,57 @@ namespace Personage
         //////////////////////////////////////////////
         public void Move(float deltaTime)
         {
-            _mp._accelerateMove = new Vector3(_mp._inputMove.x, 0, _mp._inputMove.y) * _mp._speedMove * deltaTime;//0.03f;//
-            _mp._velocity = _mp._accelerateMove;
+            Vector3 v = new Vector3(0,0,0);
 
-            if (_mp._attackState == true)
+            UpdateCharacter("AccelerateMove", new Vector3(
+                GetCharacter("InputMove",v).x, 
+                0,
+                GetCharacter("InputMove", v).y) * GetCharacter("SpeedMove",0) * deltaTime);
+
+            if (GetCharacter("AttackState",true) == true)
             {
-                _mp._accelerateMove = new Vector3(0, 0, 0);
+                UpdateCharacter("AccelerateMove", v);
             }
 
-            if (_mp._attackState == false && _mp._deathState == false )
+            if (GetCharacter("AttackState", true) == false && GetCharacter("DeathState", true) == false)
             {
-                if (_mp._accelerateMove != new Vector3(0, 0, 0))
+                if (GetCharacter("AccelerateMove", v) != v)
                 {
-                    _mp._nameState = "isRun";
+                    UpdateCharacter("AnimState", "isRun");
+                    UpdateCharacter("SpeedAnim", 1);
                     KeyValuePair<string, IModel> p = new KeyValuePair<string, IModel>("animator", new ModelAnimator { _nameModel = "isRun" });
-                    _mp._speedAnim = 1;
                     notify(p);
                 }
-                else if (_mp._accelerateMove == new Vector3(0, 0, 0))
+                else if (GetCharacter("AccelerateMove", v) == v)
                 {
-                    _mp._nameState = "isIdle";
+                    UpdateCharacter("AnimState", "isIdle");
+                    UpdateCharacter("SpeedAnim", 1);
                     KeyValuePair<string, IModel> p = new KeyValuePair<string, IModel>("animator", new ModelAnimator { _nameModel = "isIdle" });
-                    _mp._speedAnim = 1;
                     notify(p);
                 }
             }
         }
         public void Rotate(float deltaTime)
         {
-            float rotationY = _mp._angleEuler.y + _mp._inputRotate.y * _mp._speedRotate;
+            Vector3 v = new Vector3(0,0,0);
 
-            _mp._accelerateRoteY = _mp._inputRotate.y * _mp._speedRotate;
-            _mp._angleEuler = new Vector3(_mp._inputRotate.x, rotationY, 0);
+            UpdateCharacter("AccelerateRoteY", GetCharacter("AngleEuler", v).y + GetCharacter("InputRotate", v).y * GetCharacter("SpeedRotate", 0) * deltaTime);
+            UpdateCharacter("AngleEuler", new Vector3(GetCharacter("InputRotate", v).x, GetCharacter("AccelerateRoteY",0), 0));
         }
 
         //////////////////////////////////////////////
         public void Attack(string nameAttack)
         {
-            _mp._attackState = true;
-            _mp._nameState = nameAttack;
-            _mp._speedAnim = _mp._speedWeapon;
+            UpdateCharacter("AttackState", true);
+            UpdateCharacter("AnimState", nameAttack);
+            UpdateCharacter("SpeedAnim", GetCharacter("SpeedWeapon", 0));
+
             KeyValuePair<string, IModel> p = new KeyValuePair<string, IModel>("animator", new ModelAnimator { _nameModel = "isAttack1" });
             notify(p);
         }
         public void AttackDisActive()
         {
-            _mp._attackState = false;
+            UpdateCharacter("AttackState", false);
         }
 
         //////////////////////////////////////////////
@@ -212,18 +268,18 @@ namespace Personage
         }
 
         //////////////////////////////////////////////
-        public int AddWeapon(ModelWeapon mw)
+        public int AddWeapon(IModel mw)
         {
-            _mp._nameWeapon = mw._nameModel;
-            _mp._pWeaponDamage = mw._pDamage;
-            _mp._mWeaponDamage = mw._mDamage;
-            _mp._speedWeapon = mw._speedWeapon;
+            UpdateCharacter("NameWeapon", mw._nameModel);
+            UpdateCharacter("PWeaponDamage", ((ModelWeapon)mw)._pDamage);
+            UpdateCharacter("MWeaponDamage", ((ModelWeapon)mw)._mDamage);
+            UpdateCharacter("SpeedWeapon", ((ModelWeapon)mw)._speedWeapon);
 
-            if (mw._countSlot == 1)
+            if (((ModelWeapon)mw)._countSlot == 1)
             {
                 TakeSlot("RightHand", (ISlot)mw);
             }
-            if (mw._countSlot == 2)
+            if (((ModelWeapon)mw)._countSlot == 2)
             {
                 TakeSlot("RightHand", (ISlot)mw);
                 TakeSlot("LeftHand", (ISlot)mw);
@@ -239,27 +295,34 @@ namespace Personage
         ////////////////////////////////////////////////
         public void InputMove(Vector2 inputMove)
         {
-            if (_mp._countFrame < 50) { _mp._speedMove = 6; }
-            if (_mp._countFrame > 50) { _mp._speedMove = 2; }
-
-            _mp._inputMove = inputMove;
+            //if (_mp._countFrame < 50) { _mp._speedMove = 6; }
+            //if (_mp._countFrame > 50) { _mp._speedMove = 2; }
+            UpdateCharacter("InputMove", inputMove);
         }
         public void InputRotate(Vector2 inputRotate)
         {
-            if (_mp._countFrame < 50) { _mp._speedRotate = 3; }
-            if (_mp._countFrame > 50) { _mp._speedRotate = 1; }
+            //if (_mp._countFrame < 50) { _mp._speedRotate = 3; }
+            //if (_mp._countFrame > 50) { _mp._speedRotate = 1; }
+            UpdateCharacter("InputRotate", inputRotate);
+        }
 
-            _mp._inputRotate = inputRotate;
+        public float DefineDamage() 
+        {
+            if(GetCharacter("MWeaponDamage",0) > 0)
+                return GetCharacter("MWeaponDamage", 0);
+            if (GetCharacter("PWeaponDamage",0) > 0)
+                return GetCharacter("PWeaponDamage", 0);
+            return 0;
         }
 
         ////////////////////////////////////////////////
         public void TakeDamage(float hitDamage)
         {
-            float cleanDamage = hitDamage - _mp._pDefence;
-            if (cleanDamage < 1) { cleanDamage = 1; }
-            _mp._health -= cleanDamage;
-            if(_mp._health <= 0) { _mp._deathState = true; }
+            UpdateCharacter("TakeDamage", hitDamage - GetCharacter("PDefence", 0));
+            UpdateCharacter("Health", GetCharacter("Health", 0) - GetCharacter("TakeDamage", 0));
+            if (GetCharacter("Health", 0) <= 0) { UpdateCharacter("DeathState", true); UpdateCharacter("Health", 0); }
         }
+
         /////////////////////////////////////////////////////
         public Vector3 SpawnRandom()
         {
@@ -272,12 +335,10 @@ namespace Personage
             float posX = contrPoint.x + randomValueX;
             float posZ = contrPoint.z + randomValueZ;
 
-            Vector3 corSpawn = new Vector3(posX, _mp._hSpawn, posZ);
-
-            SetPosition(corSpawn);
+            Vector3 corSpawn = new Vector3(posX, GetCharacter("HSpawn",0), posZ);
+            UpdateCharacter("Position", corSpawn);
 
             return corSpawn;
         }
-
     }
 }

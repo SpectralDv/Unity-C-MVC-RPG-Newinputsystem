@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using Model;
-namespace SpaceAnimator
+using uAnimator;
+namespace Model.uAnimator
 {
 
     public class ModelAnimator : IAnimator

@@ -11,6 +11,9 @@ namespace View
         private float _damage;
         private string _nameAttacker;
 
+        public Material[] defaultMaterial;
+        public Material[] hitMaterialRed;
+
         void Start()
         {
             if (transform.GetComponent<BoxCollider>() != null)
@@ -33,6 +36,7 @@ namespace View
             if (transform.GetComponent<BoxCollider>() != null)
             {
                 transform.GetComponent<BoxCollider>().enabled = true;
+                transform.Find("Weapon").gameObject.GetComponent<SkinnedMeshRenderer>().materials = hitMaterialRed;
             }
         }
         public void DisActiveCollider()
@@ -40,6 +44,7 @@ namespace View
             if (transform.GetComponent<BoxCollider>() != null)
             {
                 transform.GetComponent<BoxCollider>().enabled = false;
+                transform.Find("Weapon").gameObject.GetComponent<SkinnedMeshRenderer>().materials = defaultMaterial;
             }
         }
 

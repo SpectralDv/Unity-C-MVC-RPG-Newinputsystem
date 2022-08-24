@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 using Model;
-namespace Keyboard
+namespace Model.Keyboard
 {
 
     public class ModelKeyboard : IModel

@@ -17,8 +17,8 @@ namespace View
 
         private Vector3 gPRotation; //углы игрока
         private Quaternion PRotation; //кватернионы игрока
-        private float limitDown = -10; // ограничение вращения вниз
-        private float limitUp = 40; // ограничение вращения вверх
+        private float limitDown = -10; 
+        private float limitUp = 40; 
 
         private float roteVerValue;
         private float roteX;

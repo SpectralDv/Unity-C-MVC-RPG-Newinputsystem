@@ -6,7 +6,8 @@ using UnityEngine;
 
 using Model;
 using Observer;
-namespace Weapon 
+using Model.Weapon;
+namespace Controller.Weapon 
 {
     public class ControllerWeapon : IObservable
     {

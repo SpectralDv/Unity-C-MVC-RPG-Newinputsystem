@@ -75,6 +75,10 @@ namespace View
             rectVisiblePanel3 = VisiblePanel3.GetComponent<RectTransform>();
             rectVisiblePanel4 = VisiblePanel4.GetComponent<RectTransform>();
 
+        }
+
+        void Start()
+        {
             SpawnMenuPanel();
         }
 
@@ -114,7 +118,6 @@ namespace View
 
                 rectTransfrom1.sizeDelta = new Vector2(0, -150);
                 rectTransfrom1.anchoredPosition = new Vector3(0, 0, 0);
-
 
                 rectVisiblePanel1.sizeDelta = new Vector2(1920, 1080);
                 rectVisiblePanel1.anchoredPosition = new Vector3(0, 0, 0);
@@ -192,9 +195,6 @@ namespace View
 
         public void ChangeActiveMenuPanel(bool event1, bool event2, bool event3, bool event4)
         {
-            Debug.Log(event1);
-
-
             ButtonMenuPlayer1.SetActive(event1);
             ButtonMenuPlayer2.SetActive(event2);
             ButtonMenuPlayer3.SetActive(event3);

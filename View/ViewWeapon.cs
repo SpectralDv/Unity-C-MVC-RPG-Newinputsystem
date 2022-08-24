@@ -5,8 +5,9 @@ using UnityEngine;
 
 
 using Model;
-using Personage;
-using Weapon;
+using Model.Weapon;
+using Controller.Personage;
+using Controller.Weapon;
 namespace View
 {
     public class ViewWeapon : MonoBehaviour

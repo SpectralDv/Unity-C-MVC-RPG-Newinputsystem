@@ -1,19 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; //FindObjectsOfType
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
-using SpaceAnimator;
-using Personage;
 using Controller.Player;
+using View.uAnimator;
 namespace View
 {
     public class ViewPlayer : MonoBehaviour
     {
         //private Terrain terrain;
         [SerializeField]
-        private int playerIndex = 0;
+        private int numPlayer = 0;
         [SerializeField]
         private GameObject Person;
         [SerializeField]
@@ -23,6 +22,8 @@ namespace View
         private ControllerPlayer controllerPlayer;
         private ViewPersonage viewPersonage;
         private ViewAnimator viewAnimator;
+        [HideInInspector]
+        public ViewVisiblePanel viewVisiblePanel;
 
         private Vector2 moveVector = Vector2.zero;
         private Vector2 rotateVector = Vector2.zero;
@@ -34,11 +35,13 @@ namespace View
             viewPersonage = transform.GetComponent<ViewPersonage>();
             viewAnimator = transform.GetComponent<ViewAnimator>();
 
+            var viewVisiblePanels = FindObjectsOfType<ViewVisiblePanel>();
+            viewVisiblePanel = viewVisiblePanels.FirstOrDefault(m => m.GetNumPlayer() == numPlayer);
+            viewVisiblePanel.DisActiveVisiblePanel();
+
             //terrain = GameObject.FindGameObjectWithTag("tagTerrain").gameObject.GetComponent<Terrain>();
 
             //fps = GameObject.FindGameObjectWithTag("tagCanvas").gameObject.transform.Find("FPS").GetComponent<FPS>();
-
-            //Debug.Log("ViewPlayer");
         }
 
         //////////////////////////////
@@ -73,9 +76,9 @@ namespace View
             }
         }
         ///////////////////////////
-        public int GetPlayerIndex()
+        public int GetNumPlayer()
         {
-            return playerIndex;
+            return numPlayer;
         }
         //////////////////////////////
         public void InputVectorMove(Vector2 vectorValue)

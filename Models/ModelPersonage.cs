@@ -4,15 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using Slot;
-namespace Personage
+using Personage;
+namespace Model.Personage
 {
-    public class ModelSlot : ISlot
-    {
-        public string _nameModel { get; set; }
-        public ISlot _slot { get; set; }
-    }
-
     public class ModelPersonage : IPersonage
     {
         public string _nameModel { get; set; }
@@ -29,6 +23,26 @@ namespace Personage
         public float _takeMDamage { get; set; }
         public float _countDeath { get; set; }
 
+        public float _level { get; set; }
+        public float _expPersonage { get; set; }
+        public float _expNextLevel { get; set; }
+
+        public float _heartiness { get; set; } //количество здоровья
+        public float _intelegence { get; set; } //количество маны
+        public float _strange { get; set; } //количество силы 
+        public float _dexterity { get; set; } //количество ловкости 
+        public float _edurance { get; set; } //количество выносливости 
+        public float _faith { get; set; } //вера, количество магической силы для восстановления здоровья
+        public float _arcane { get; set; } //колдовтсво, количество магической силы
+        public float _spirit { get; set; } //дух, скорость восстановления здоровья 
+        public float _mind { get; set; } //мудрость, скорость восстановления маны 
+        public float _stamina { get; set; } //скорость восстановления выносливости 
+
+        public float _lightAddress { get; set; } //бонус к ношению легкой брони
+        public float _mediumAddress { get; set; } //бонус к ношению средней брони
+        public float _havyAddress { get; set; } //бонус к ношению тяжелой брони
+
+
         public float _speedAnim { get; set; }
         public float _speedWeapon { get; set; }
         public float _pWeaponDamage { get; set; }
@@ -37,7 +51,7 @@ namespace Personage
         public float _hSpawn { get; set; }
         public float _hTerrain { get; set; }
         public float _speedMove { get; set; }
-        public float _speedRotate { get; set; }
+        public float _speedRotate { get; set; } 
         public Vector3 _position { get; set; }
         public Vector3 _angleEuler { get; set; }
 

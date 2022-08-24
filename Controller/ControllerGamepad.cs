@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-using Player;
-namespace Gamepad
+using Model.MoveRote;
+using Model.Gamepad;
+namespace Controller.Gamepad
 {
     enum eGamepad
     {

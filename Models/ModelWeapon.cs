@@ -5,7 +5,8 @@ using UnityEngine;
 
 
 using Slot;
-namespace Weapon
+using Weapon;
+namespace Model.Weapon
 {
 
     public class ModelWeapon : IWeapon

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Space
+namespace Model.SelectMenu
 {
-    public class ModelSelectMenu : MonoBehaviour
+    public class ModelSelectMenu 
     {
         public Vector2 size { get; set; }
         public Vector3 position { get; set; }

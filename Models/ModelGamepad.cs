@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 using Model;
-namespace Gamepad
+namespace Model.Gamepad
 {
 
     public class ModelGamepad : IModel
